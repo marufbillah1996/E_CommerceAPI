@@ -16,12 +16,15 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();//a choice o
                                                                     //Scoped: the service is going to live for as long as the HTTP request. It's scoped to the lifetime of the HTTP request.
                                                                     //Transient: this is effectively scoped to the method level, not the request level.
                                                                     //Singleton: this is going to create the service when the application starts up and will not dispose of the service until the application shuts down.
-                                                                    // Lea
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+//middleware - a middleware is just software that runs of potentially can run on the request as it's coming through.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
