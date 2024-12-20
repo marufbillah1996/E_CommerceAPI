@@ -77,5 +77,14 @@ namespace Infrastructure.Data
         {
             return SpecificationEvaluator<T>.GetQuery<T,TResult>(context.Set<T>().AsQueryable(), spec);
         }
+        //when we do pagination, we do make two requests to our database ,
+            //one to get the list of products and one to get the count of the products.
+            //That is unavoidable with this system, and it does mean that we do make those two queries including the count.
+        public async Task<int> CountAsync(ISpecification<T> spec)
+        {
+            var query = context.Set<T>().AsQueryable();
+            query  = spec.ApplyCriteriaI(query);
+            return await query.CountAsync();
+        }
     }
 }

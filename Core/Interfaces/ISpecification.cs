@@ -18,10 +18,15 @@ namespace Core.Interfaces
 
     public interface ISpecification<T>
     {
-         Expression<Func<T, bool>>? Criteria { get; } //just for filtering or work as where 
-         Expression<Func<T, object>>? OrderBy { get; } //for sorting
-         Expression<Func<T, object>>? OrderByDescnding { get; } //for sorting
-         bool IsDistinct {  get; }
+        Expression<Func<T, bool>>? Criteria { get; } //just for filtering or work as where 
+        Expression<Func<T, object>>? OrderBy { get; } //for sorting
+        Expression<Func<T, object>>? OrderByDescnding { get; } //for sorting
+        bool IsDistinct {  get; }
+        //pagination
+        int Take { get; }
+        int Skip { get; }
+        bool IsPagingEnabled { get; }
+        IQueryable<T> ApplyCriteriaI(IQueryable<T> query);
     }
     /// <summary>
     /// This part one where we enhance our ISpecification to not just take type parameter , but also one that allow us to return type to the one that's using the specification
