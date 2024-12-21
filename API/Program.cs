@@ -19,7 +19,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();//a choice o
                                                                     //Singleton: this is going to create the service when the application starts up and will not dispose of the service until the application shuts down.
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 
-
+builder.Services.AddCors();
 
 builder.Services.AddSwaggerGen();
 
@@ -39,6 +39,9 @@ if (app.Environment.IsDevelopment())
 app.UseAuthorization();
 
 app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseCors(x=>x.AllowAnyHeader().AllowAnyHeader()
+    .WithOrigins("http://localhost:4200","https://localhost:4200"));
 
 app.MapControllers();
 //for seeding data
