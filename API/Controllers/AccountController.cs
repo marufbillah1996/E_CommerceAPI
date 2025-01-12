@@ -22,7 +22,14 @@ namespace API.Controllers
                 UserName = registerDTO.Email
             };
             var result = await signInManager.UserManager.CreateAsync(user,registerDTO.Password);
-            if(!result.Succeeded) return BadRequest(result.Errors);
+            if(!result.Succeeded) 
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.Code, error.Description);
+                    return ValidationProblem();
+                }
+            };
             return Ok();
         }
         [Authorize]
@@ -37,7 +44,7 @@ namespace API.Controllers
         {
             if(User.Identity?.IsAuthenticated == false) return NoContent();
 
-            var user = await signInManager.UserManager.GetUserByEmail(User);
+            var user = await signInManager.UserManager.GetUserByEmail(User); 
             if(user == null) return Unauthorized();
 
             return Ok(new
