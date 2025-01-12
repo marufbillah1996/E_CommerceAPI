@@ -1,4 +1,5 @@
 using API.Middleware;
+using Core.Entities;
 using Core.Interfaces;
 using Infrastructure.Data;
 using Infrastructure.Data.SeedData;
@@ -31,6 +32,11 @@ builder.Services.AddSingleton<IConnectionMultiplexer>(config =>
 }); 
 builder.Services.AddSingleton<ICartService,CartService>();
 
+builder.Services.AddAuthorization();
+
+builder.Services.AddIdentityApiEndpoints<AppUser>()
+    .AddEntityFrameworkStores<StoreContext>();  
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -54,6 +60,9 @@ app.UseCors(x=>x.AllowAnyHeader().AllowAnyHeader()
     .WithOrigins("http://localhost:4200","https://localhost:4200"));
 
 app.MapControllers();
+
+app.MapIdentityApi<AppUser>();
+
 //for seeding data
 try
 {
