@@ -61,7 +61,7 @@ app.UseCors(x=>x.AllowAnyHeader().AllowAnyHeader()
 
 app.MapControllers();
 
-app.MapIdentityApi<AppUser>();
+app.MapGroup("api").MapIdentityApi<AppUser>(); // api/login
 
 //for seeding data
 try
